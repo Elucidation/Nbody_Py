@@ -7,20 +7,18 @@ class Body:
         self.load(x,y,vx,vy,m)
 
     def pp(self):
-        print ("p: %e %e " % (self.x,self.y)).rjust(20) \
-              + ("v: %e %e " % (self.vx,self.vy)).rjust(20) \
-              + ("m: %e " % self.m).rjust(20)
+        print "P %.3e %.3e V %.3e %.3e M %.3e" \
+              % (self.x, self.y, self.vx, self.vy, self.m)
 
     def __str__(self):
-        return "%d %d %d %d %d" % (self.x,self.y,self.vx,self.vy,self.m)
+        return "%e %e %e %e %e" % (self.x,self.y,self.vx,self.vy,self.m)
 
-    def load(self,x,y,vx,vy,m):
-        self.x,self.y,self.vx,self.vy,self.m = map(float,[x,y,vx,vy,m])
-        return self
-        
     def loadFromString(self,string):
         """ provided string """
         self.load(*string.split(' '))
         return self
         
-        
+    def load(self,x,y,vx,vy,m):
+        self.x,self.y,self.vx,self.vy,self.m = map(float,[x,y,vx,vy,m])
+        return self
+    

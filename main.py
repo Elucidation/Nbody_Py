@@ -14,3 +14,4 @@ with open('solarsystem.txt','r') as f:
 
 for b in bodies:
     b.pp()
+
