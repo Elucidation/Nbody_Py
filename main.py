@@ -1,7 +1,8 @@
 from System import *
 
+dt = 2500
 
-sys = System('spiral.txt',100000)
+sys = System('spiral.txt',dt)
 #sys = System('dance10.txt',100000)
 #sys = System('test1.txt',100000)
 #sys = System('solarsystem.txt',100000)
@@ -12,6 +13,7 @@ for b in sys.bodies:
 
 
 from graphics import *
-a = World(sys)  
+a = World(sys,updateRate=1/1000.0) # Maxes out at roughly 300 somethin steps/sec
+print "Refresh Rate: %g, Update Rate: %g" % (a.frameRate, a.updateRate)
 
 pyglet.app.run()
