@@ -77,7 +77,7 @@ class World(pyglet.window.Window):
 
     def updateLabel(self,dt):
         self.updateStats("FPS: %.2f, " % pyglet.clock.get_fps() + \
-                      "Steps: %5g, N: %i, O(n): %g, " % (self.sys.steps, self.sys.N, self.sys.accCount) + \
+                      "Steps: %5g, N: %i, O(): %g, " % (self.sys.steps, self.sys.N, self.sys.accCount) + \
                       "System Time: %.3es" % self.sys.time
                          )
                          

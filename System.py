@@ -1,5 +1,6 @@
 from Body import *
 from math import sqrt
+
 class System:
     def __init__(self,filename,dt = 1, G = 6.673e-11):
         self.steps = 0
@@ -16,7 +17,7 @@ class System:
                     Body().loadFromString(line.strip()) 
                     )
         if len(self.bodies) != self.N :
-            raise Exception('Expected '+self.N+' bodies, only found '+len(self.bodies))
+            raise Exception('Expected %i bodies, only found %i' % (self.N,len(self.bodies)))
 
     def step(self):
         self.accCount = 0

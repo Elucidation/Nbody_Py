@@ -1,3 +1,4 @@
+from re import findall
 class Body:
     """Defines a body, containing mass, 2d position & velocity"""
     def __init__(self):
@@ -15,13 +16,21 @@ class Body:
 
     def loadFromString(self,string):
         """ provided string """
-        self.load(*string.split(' '))
+        self.load(*findall(r'[\-\+\w\.]+', string)) # Just splits by spaces
         return self
         
-    def load(self,x,y,vx,vy,m):
+    def load(self,x,y,vx,vy,m,*extra):
         self.x,self.y,self.vx,self.vy,self.m = map(float,[x,y,vx,vy,m])
         return self
 
     def step(self,dt=1):
         self.x += self.vx * dt
         self.y += self.vy * dt
+
+    def isIn(self,quad):
+        """ Returns boolean whether body is inside square region passed [x y x2 y2] """
+        if self.x < quad[0] or self.x > quad[1]:
+            return false
+        if self.y < quad[2] or self.y > quad[3]:
+            return false
+        return true
