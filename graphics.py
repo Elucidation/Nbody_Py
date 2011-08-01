@@ -49,7 +49,7 @@ class World:
             self.points[i+1] = b.y * self.scale / 2 + self.WindowBoxSize / 2
             i += 2
 
-        print self.points
+##        print self.points
 
     def drawBodies(self): #R is max radius, used for scale
         pyglet.graphics.draw(self.N,pyglet.gl.GL_POINTS,
@@ -70,11 +70,10 @@ class World:
     ##Shows all events
     ##window.push_handlers(pyglet.window.event.WindowEventLogger())
 
-    def go(self):
+    def setupEvents(self):
         self.window.on_draw = self.on_draw
         self.window.on_mouse_press = self.on_mouse_press
         self.window.on_key_press = self.on_key_press
-        pyglet.app.run()
 
 
 def drawPoint(x,y):

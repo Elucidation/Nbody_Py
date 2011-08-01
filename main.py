@@ -19,4 +19,13 @@ for b in bodies:
 
 from graphics import *
 a = World(bodies,R)
-a.go()
+
+a.setupEvents()
+
+def update(dt):
+    bodies[0].y += 1e8
+    a.updateBodies(bodies)
+
+pyglet.clock.schedule_interval(update, 0.1)
+
+pyglet.app.run()
