@@ -1,31 +1,30 @@
-from Body import *
+from System import *
 
-bodies = []
-with open('solarsystem.txt','r') as f:
-    print f
+sys = System('solarsystem.txt',10000)
 
-    N = int(f.readline())
-    R = float(f.readline())
-    for line in f.readlines():
-        bodies.append(
-            Body().loadFromString(line.strip()) 
-            )        
+print sys
 
-print "N : %d, R: %s" % (N,R)
-for b in bodies:
+print "N : %d, R: %s" % (sys.N,sys.R)
+for b in sys.bodies:
     b.pp()
 
 
-
 from graphics import *
-a = World(bodies,R)
+a = World(sys.bodies,sys.R)
 
-a.setupEvents()
+
+
+def updateLabel(dt):
+    a.updateStats("FPS: %.2f \n" % pyglet.clock.get_fps() + \
+                  "Steps: %5g   #CompsPerStep: %g \n" % (sys.steps, sys.accCount) + \
+                  "System Time: %.0fs" % sys.time
+                  )
 
 def update(dt):
-    bodies[0].y += 1e8
-    a.updateBodies(bodies)
+    sys.step()
+    a.updateBodies(sys.bodies)
+    
 
-pyglet.clock.schedule_interval(update, 0.1)
-
+pyglet.clock.schedule_interval(updateLabel, 1/60.0)
+pyglet.clock.schedule_interval(update, 1/25.0)
 pyglet.app.run()

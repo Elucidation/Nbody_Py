@@ -2,8 +2,9 @@ import pyglet
 from pyglet.window import key, mouse
 
 
-class World:
+class World(pyglet.window.Window):
     def __init__(self,bodies,R,windowSize=500):
+        super(World, self).__init__()
         self.bodies = bodies
         self.R = R # max Radius used for scaling
         self.WindowBoxSize = windowSize
@@ -16,25 +17,26 @@ class World:
         print "N: %i SCALE: %g" % (self.N, self.scale)
 
         
-        self.window = pyglet.window.Window(self.WindowBoxSize,self.WindowBoxSize)
-        print "W: %i H: %i" % (self.window.width, self.window.height)
+        
+        print "W: %i H: %i" % (self.width, self.height)
 
         self.label = pyglet.text.Label('Hello world',
                                   font_name='Times New Roman',
-                                  font_size = 36,
-                                  x=self.window.width/2,
-                                  y=self.window.height/2,
-                                  anchor_x='center',
-                                  anchor_y='center')
-
-        ##image = pyglet.resource.image('prof2.jpg')
-
+                                  font_size = 9,
+                                  x=0,
+                                  y=self.height,
+                                  anchor_x='left',
+                                  anchor_y='top')
     
     def on_draw(self):
-        self.window.clear()
+        self.clear()
         pyglet.gl.glColor4f(0, 1, 1, 1.0)
         self.drawBodies()
-
+        self.label.draw()
+        
+    def updateStats(self,newText):
+        self.label.text = newText;
+        
     def updateBodies(self,newbodies):
         self.bodies = newbodies
         self.N = len(newbodies)
@@ -48,8 +50,6 @@ class World:
             self.points[i] = b.x * self.scale / 2 + self.WindowBoxSize / 2
             self.points[i+1] = b.y * self.scale / 2 + self.WindowBoxSize / 2
             i += 2
-
-##        print self.points
 
     def drawBodies(self): #R is max radius, used for scale
         pyglet.graphics.draw(self.N,pyglet.gl.GL_POINTS,
@@ -70,11 +70,6 @@ class World:
     ##Shows all events
     ##window.push_handlers(pyglet.window.event.WindowEventLogger())
 
-    def setupEvents(self):
-        self.window.on_draw = self.on_draw
-        self.window.on_mouse_press = self.on_mouse_press
-        self.window.on_key_press = self.on_key_press
-
 
 def drawPoint(x,y):
     pyglet.graphics.draw(1,pyglet.gl.GL_POINTS,
@@ -84,6 +79,6 @@ def drawPoint(x,y):
 
 def drawBox(x,y,x2,y2):
     pyglet.graphics.draw_indexed(4,pyglet.gl.GL_LINES,
-                                 [0,1,1,2,2,3,3,0],
+                                 [0,1, 1,2, 2,3, 3,0],
                          ('v2i',(x,y, x2,y, x2,y2, x,y2))
                          )

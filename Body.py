@@ -21,4 +21,7 @@ class Body:
     def load(self,x,y,vx,vy,m):
         self.x,self.y,self.vx,self.vy,self.m = map(float,[x,y,vx,vy,m])
         return self
-    
+
+    def step(self,dt=1):
+        self.x += self.vx * dt
+        self.y += self.vy * dt
