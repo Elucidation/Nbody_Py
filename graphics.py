@@ -3,18 +3,24 @@ from pyglet.window import key, mouse
 
 
 class World(pyglet.window.Window):
-    def __init__(self,bodies,R,windowSize=500):
+    def __init__(self,sys,windowSize=500):
         super(World, self).__init__()
-        self.bodies = bodies
-        self.R = R # max Radius used for scaling
+        self.sys = sys
+        self.R = sys.R # max Radius used for scaling
         self.WindowBoxSize = windowSize
+        self.width, self.height = windowSize, windowSize
         
         self.scale = self.WindowBoxSize/self.R
         # Origin will be center of screen
         # With screen width = twice the radius for scale
+        
+        self.points = []
+        for i in range(0,self.sys.N*2):
+            self.points.append(float(0))
+        self.updateBodies()
 
-        self.updateBodies(bodies)
-        print "N: %i SCALE: %g" % (self.N, self.scale)
+        
+        print "N: %i SCALE: %g" % (self.sys.N, self.scale)
 
         
         
@@ -37,22 +43,15 @@ class World(pyglet.window.Window):
     def updateStats(self,newText):
         self.label.text = newText;
         
-    def updateBodies(self,newbodies):
-        self.bodies = newbodies
-        self.N = len(newbodies)
-        
-
-        self.points = []
-        for i in range(0,self.N*2):
-            self.points.append(float(0))
+    def updateBodies(self):
         i=0
-        for b in self.bodies:
+        for b in self.sys.bodies:
             self.points[i] = b.x * self.scale / 2 + self.WindowBoxSize / 2
             self.points[i+1] = b.y * self.scale / 2 + self.WindowBoxSize / 2
             i += 2
 
     def drawBodies(self): #R is max radius, used for scale
-        pyglet.graphics.draw(self.N,pyglet.gl.GL_POINTS,
+        pyglet.graphics.draw(self.sys.N,pyglet.gl.GL_POINTS,
                              ('v2f',self.points)
                              )
 
@@ -60,7 +59,7 @@ class World(pyglet.window.Window):
     
     def on_mouse_press(self,x,y,button,modifiers):
         if button == mouse.LEFT:
-            print "Left Mouse button pressed."
+            print self.sys
 
     
     def on_key_press(self,symbol,modifiers):
