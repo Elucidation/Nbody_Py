@@ -33,7 +33,8 @@ class World(pyglet.window.Window):
                                   y=self.height,
                                   anchor_x='left',
                                   anchor_y='top')
-    
+
+        pyglet.clock.schedule_interval(self.updateLabel, 1/60.0)
     def on_draw(self):
         self.clear()
         pyglet.gl.glColor4f(0, 1, 1, 1.0)
@@ -64,8 +65,22 @@ class World(pyglet.window.Window):
     
     def on_key_press(self,symbol,modifiers):
         if symbol == key.A:
-            print "The 'A' key was pressed"
+            print "Pausing"
+            pyglet.clock.unschedule(self.update)
+        if symbol == key.B:
+            print "Unpausing"
+            pyglet.clock.schedule_interval(self.update, 1/25.0)
 
+    def update(self,dt):
+        self.sys.step()
+        self.updateBodies()
+
+    def updateLabel(self,dt):
+        self.updateStats("FPS: %.2f, " % pyglet.clock.get_fps() + \
+                      "Steps: %5g, N: %i, O(n): %g, " % (self.sys.steps, self.sys.N, self.sys.accCount) + \
+                      "System Time: %.3es" % self.sys.time
+                         )
+                         
     ##Shows all events
     ##window.push_handlers(pyglet.window.event.WindowEventLogger())
 
